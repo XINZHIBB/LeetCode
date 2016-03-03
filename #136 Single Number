@@ -1,0 +1,27 @@
+public class Solution {
+    public int singleNumber(int[] nums) {
+        int result = 0; 
+        for(int i=0;i<nums.length;i++){
+            result ^= nums[i];
+        }
+        return result; 
+    }
+}
+
+/************************************
+1.According to the requirement of the question, the complexity of the algorithem should be O(n) and the extra memory should be used.
+  So we need to deal with the numbers in the array using a way that they can calculate with themselves and obtain the final result. In 
+  this sense, the boolean algebra should a good choice. As we know, when a number do a Exclusive or(xor) with itself, the result is 0, 
+  if a number do a Exclusive or(xor) with 0, the result is itself. Moreover, Exclusive or has the associativity which means 
+  A xor B xor C = A xor C xor B. So we can xor all the elements in the array so that the same ones will results 0 and the final result of 
+  the xor should be the Single Number. 
+2.With Extra Memory. and O(n^2)
+  Build another array to store the array met once. 
+  for every element in the nums 
+    search this element in the nums_once 
+      if this element exists in the nums_once, then delete it in nums_once 
+      else copy this element to nums_once. 
+  
+  return the value of nums_once. 
+
+*************************************/
