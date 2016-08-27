@@ -1,0 +1,57 @@
+Given a collection of integers that might contain duplicates, nums, return all possible subsets.
+
+Note: The solution set must not contain duplicate subsets.
+
+For example,
+If nums = [1,2,2], a solution is:
+
+[
+  [2],
+  [1],
+  [1,2,2],
+  [2,2],
+  [1,2],
+  []
+]
+---------------------------------------------------------------------------------------------------
+Solution: 
+//题目没有要求sort,但是sort之后有助于我们发现相同的element. 
+//如果发现element与之前一个相同，那么在构建与这个element相关的集合时，不能将其加入现有集合中的每一个subset，组成新的subset，加入到result中
+//这样会有duplicate. 只能将该element加入到之前加入相同element时所导致result中所增加的subsets中，而不是将其加入到result中所有的subsets中。
+public class Solution {
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        List<List<Integer>> res = new ArrayList<List<Integer>>();
+        res.add(new ArrayList<Integer>());
+        if(nums.length ==0 || nums ==null){
+            return res;
+        }
+        Arrays.sort(nums);
+        int n = nums.length;
+        int size=0;
+        int preSize=0;
+        for(int i=0;i<n;i++){
+            size = res.size();
+            if(i>0){
+                if(nums[i]==nums[i-1]){
+                    int index = size-1; 
+                    for(int j=0;j<size-preSize;j++){
+                        List<Integer> tmp = new ArrayList<Integer>(res.get(index));
+                        tmp.add(nums[i]);
+                        res.add(tmp);
+                        index --;
+                    }
+                    preSize = size;
+                    continue;
+                }
+            }
+            
+            for(int j=0; j<size;j++){
+                List<Integer> tmp = new ArrayList<Integer>(res.get(j));
+                tmp.add(nums[i]);
+                res.add(tmp);
+            }
+            preSize = size; 
+        }
+        return res;
+    }
+}
