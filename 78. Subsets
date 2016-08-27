@@ -1,0 +1,99 @@
+Description:
+Given a set of distinct integers, nums, return all possible subsets.
+
+Note: The solution set must not contain duplicate subsets.
+
+For example,
+If nums = [1,2,3], a solution is:
+
+[
+  [3],
+  [1],
+  [2],
+  [1,2,3],
+  [1,3],
+  [2,3],
+  [1,2],
+  []
+]
+-----------------------------------------------------------------------
+Solution1: 
+//从零个元素开始，依次将nums中的元素所对应产生的集合加入到result中。
+//可以发现规律为添加Si后，新增的subset为克隆现有的所有subset，并在它们后面都加上Si。
+public class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> res = new ArrayList<List<Integer>>();
+        res.add(new ArrayList<Integer>());    
+        Arrays.sort(nums);
+        for(int i=0;i<nums.length;i++){
+            int n = res.size(); //store the res.size() using an int, otherwise everyloop the program will calculate it, memory is not enough
+            for(int j=0;j<n;j++){
+                List<Integer> item = new ArrayList<Integer>(res.get(j));
+                item.add(nums[i]);
+                res.add(item);
+            }
+        }
+        return res;
+    }
+}
+
+Solution2:
+//递归解法，主要递推关系就是假设函数返回递归集合，现在加入一个新的数字，我们如何得到包含新数字的所有子集。
+//其实就是在原有的集合中对每集合中的每个元素都加入新元素得到子集，然后放入原有集合中（原来的集合中的元素不用删除，因为他们也是合法子集）。
+//而结束条件就是如果没有元素就返回空集（注意空集不是null，而是没有元素的数组）就可以了。时间和空间都是取决于结果的数量，也就是O(2^n)，
+//常规的递归解法的步骤在于1.foo(1)的处理方法；2.已知foo(n-1)，推导foo(n); 对于这种题目，function中的argument是固定的，所以不可以用常规的解法
+//所以通常需要构建一个Helper function可以体现出由foo(n-1) 推导到foo(n)的过程。这样得到递归的解法
+public class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        if(nums.length == 0 || nums == null )
+            return null;
+        Arrays.sort(nums);
+        return Helper(nums,nums.length-1);
+    }
+    private List<List<Integer>> Helper(int[] nums, int index){
+        if(index == -1){ //index == -1 means that nums.length ==0 
+            List<List<Integer>> res = new ArrayList<List<Integer>>();
+            res.add(new ArrayList<Integer>());
+            return res;
+        }
+        List<List<Integer>> res = Helper(nums,index-1);
+        int size = res.size();
+        for(int i=0;i<size;i++){
+            List<Integer> tmp = new ArrayList<Integer>(res.get(i));
+            tmp.add(nums[index]);
+            res.add(tmp);
+        }
+        return res;
+    }
+}
+
+Solution3 :
+//bit manipulation 
+public class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        int n = nums.length; 
+        Arrays.sort(nums);
+        
+        // 1 << n is 2^n
+        // each subset equals to an binary integer between 0 .. 2^n - 1
+        // 0 -> 000 -> []
+        // 1 -> 001 -> [1]
+        // 2 -> 010 -> [2]
+        // ..
+        // 7 -> 111 -> [1,2,3]
+        for (int i = 0; i < (1 << n); i++) {
+            ArrayList<Integer> subset = new ArrayList<Integer>();
+            for (int j = 0; j < n; j++) {
+                // check whether the jth digit in i's binary representation is 1
+                if ((i & (1 << j)) != 0) {
+                    subset.add(nums[j]);
+                }
+            }
+            result.add(subset);
+        }
+        
+        return result;
+    }
+}
+
