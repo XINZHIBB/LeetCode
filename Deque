@@ -1,0 +1,48 @@
+Use LinkedList to implement Deque. 
+prev and next is neccessary. 
+
+ | 1 2 3 4 | 
+ first     last
+ head  ->  tail 
+class Deque {
+  ListNode head; 
+  ListNode tail; 
+  public Deque() {
+    this.head = null; 
+    this.tail = null; 
+  }
+  
+  public void offerFirst(int value) {
+    ListNode cur = new ListNode(value);
+    if (head == null) {
+      head = cur;
+      tail = cur; 
+    } else {
+      cur.next = head; 
+      head.prev = cur; 
+      head = cur; 
+    }
+  }
+  public Integer pollFirst() {
+    if (head == null) {
+      return null;  
+    } else if (head.next == null){
+      int res = head.value; 
+      head = null; 
+      tail = null; 
+      return res; 
+    } else {
+      ListNode res = head; 
+      head = head.next;
+      head.prev = null; 
+      res.next = null; 
+      return res.value; 
+    }
+  }
+  public void offerLast() {
+  }
+  public Integer pollLast() {
+  }
+  
+}
+
