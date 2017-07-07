@@ -1,0 +1,57 @@
+Use LinkedList to implement queue
+  | 1 2 3 4 |   
+ <- | 1 2 3 4 | <- 
+    head      tail 
+add from tail and delete from head
+
+class ListNode {
+  ListNode prev; 
+  ListNode next;
+  int value;
+  public ListNode(int value) {
+    this.value = value;
+  }
+}
+
+class Queue {
+  ListNode head; 
+  ListNode tail;
+  public Queue() {
+    this.head = null;
+    this.tail = null; 
+  }
+  
+  public void offer(int value) {
+    ListNode cur = new ListNode(value);
+    if (head == null) {
+      head = cur; 
+      tail = cur;
+    } else {
+      tail.next = cur;
+      tail = cur; 
+    }
+  }
+  
+  public Integer poll() {
+    if (head == null) {
+      return null;
+    } else if (head.next == null){
+      int cur = head.value;
+      head = null; 
+      tail = null; 
+      return cur;
+    } else {
+      int cur = head.value;
+      head = head.next; 
+      return cur; 
+    }
+  }
+  public Integer peek() {
+    if (head == null) {
+      return null; 
+    } else {
+      return head.value; 
+    }
+  }
+
+}
