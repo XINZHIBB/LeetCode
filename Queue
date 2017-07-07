@@ -55,3 +55,63 @@ class Queue {
   }
 
 }
+
+use array to implement queue
+
+two pointer for head and tail 
+head: first element to poll head++ 
+tail: position to add tail++
+
+
+class Queue {
+  int size;
+  int limit; 
+  int[] array; 
+  int head; 
+  int tail; 
+  public Queue(int limit) {
+    this.size = 0;
+    this.limit = limit; 
+    this.array = new int[limit];
+    this.head = 0;
+    this.tail = 0; 
+  }
+  
+  public boolean offer(int value) {
+    if (size == limit) {
+      return false; 
+    } else {
+      array[tail] = value; 
+      tail = tail == limit - 1 ? 0 : tail + 1; 
+      size ++; 
+    }
+  }
+  public Integer poll() {
+    if (size == 0) {
+      return null;  
+    } else {
+      int prev = array[head]; 
+      head = head == limit - 1 ? 0 : head + 1; 
+      size --; 
+      return prev; 
+    }
+  }
+  public Integer peek() {
+    if (size == 0) {
+      return null;
+    } else {
+      return array[head]; 
+     }
+  }
+  public Integer size() {
+    return size; 
+  }
+}
+
+
+
+
+
+
+
+
