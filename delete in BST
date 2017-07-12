@@ -1,0 +1,54 @@
+1. find the node 
+2. delete the node 
+  case1: no child 
+  case2: one child 
+  case3: two child 
+         find the smallest in the right subtree  
+         case3.1 : root of subtree 
+         case3.2 : not root of subtree
+     
+  public TreeNode delete(TreeNode root, int target){
+    if (root == null) {
+        return null; 
+    }
+    
+    // find the target node 
+    if (root.val > target) {
+      root.left = delete(root.left, target);
+      return root; 
+    } else if (root.val < target) {
+      root.right = delete(root.right, target);
+      return root; 
+    } 
+    
+    // case1+2: no child and one child
+    if (root.left == null) {
+      return root.right; 
+    } else if (root.right == null) {
+      return root.left; 
+    }
+    
+    //case3.1: two child 
+    if (root.right.left == null) {
+      root.right.left = root.left; 
+      return root.right; 
+    }
+    
+    //case3.2 
+    TreeNode smallest = findSmallest(root.right);
+    smallest.left = root.left;
+    smallest.right = root.right; 
+    return smallest; 
+  }
+  
+  private TreeNode findSmallest(TreeNode cur) {
+    TreeNode prev = cur; 
+    cur = cur.left; 
+    while (cur.left != null) {
+      prev = cur; 
+      cur = cur.left;
+    }
+    prev.left = cur.right; 
+    return cur;
+  }
+  
