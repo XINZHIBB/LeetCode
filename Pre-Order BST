@@ -1,0 +1,23 @@
+Pre-Order BST. 
+Stack -> in recursion, we use system stack 
+The current element is put in stack. 
+everytime, when we poll one element from the stack, we print it 
+
+public void preOrder(TreeNode root) {
+  if (root == null) {
+    return; 
+  }
+  
+  Deque<TreeNode> stack = new LinkedList<>(); 
+  stack.offerFirst(root); 
+  while (!stack.isEmpty()) {
+    stack.pollFirst(); 
+    //print 
+    if (root.right != null) {
+      stack.pushFirst(root.right); 
+    }
+    if (root.left != null) {
+      stack.pushFirst(root.left); 
+    }
+  }
+}
