@@ -1,0 +1,25 @@
+inorder-BST
+stack
+need to know when is the time to poll one element from the stack 
+Need a index node to indicate what is the next step
+
+public void inOrder(TreeNode root) {
+  if (root == null) {
+    return null; 
+  }
+  
+  Deque<TreeNode> stack = new Deque<>(); 
+  TreeNode next = root.left; 
+  stack.offerFirst(root); 
+   
+  while (!(next == null && stack.isEmpty())) {
+    if (next == null) {
+      next = stack.pollFirst(); 
+      //print next.value
+      next = next.right; 
+    } else {
+      stack.offerFirst(next); 
+      next = next.left; 
+    }
+  } 
+}
