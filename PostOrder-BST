@@ -1,0 +1,47 @@
+post-Order BST 
+when to poll the element from the stack 
+we need know the prev node 
+from left or right 
+
+case1: prev = its parent, push to stack, go left. 
+case2: prev = its left child, go right, 
+case3: prev = its right child, poll top of stack 
+
+public void postOrder(TreeNode root) {
+  if (root == null) {
+    return; 
+  }
+  Deque<TreeNode> stack = new LinkedList<>();
+  TreeNode prev = null; 
+  stack.offerFirst(root);
+  
+  while (!stack.isEmpty()) {
+    TreeNode cur = stack.peekFirst(); 
+    if (prev == null || prev.left == cur || prev.right == cur) {
+      if (cur.left == null && cur.right == null) {
+        //print cur.value
+        stack.pollFirst(); 
+      } else if (cur.left == null) {
+        stack.offerFirst(cur.right); 
+      } else {
+        stack.offerFirst(cur.left); 
+      }
+    } else if (prev == cur.left) {
+      if (cur.right == null) {
+        //print cur.value
+        stack.pollFirst(); 
+      } else {
+        stack.offerFirst(cur.right); 
+      }
+    } else if (prev == cur.right) {
+      //print cur.value
+      stack.pollFirst(); 
+    }
+    prev = cur; 
+  }
+}
+
+
+
+
+
