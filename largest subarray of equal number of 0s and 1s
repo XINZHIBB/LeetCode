@@ -1,0 +1,48 @@
+longgest subarray with equal number of 0s and 1s
+
+Input: arr[] = {1, 0, 1, 1, 1, 0, 0}
+return type: start idx, end idx
+[1, 6]
+
+在某一点 要知道该点为终点最长的subarray. -> 找到subarray的性质，0，1数量相等，把0看成-1的话->subarray的sum为0->preSum array中index对应的值相等的话
+说明subarray的sum为0. 
+
+
+这个问题可以转化成 1 -1 1 1 1 -1 -1
+然后通过prefixSum 转换成求最长和为0的subarray 
+
+
+
+1D array 常见解法：
+prefixSum: 求和最长， 求sum target 
+Two pointer: 2sum, 3sum, 4sum 
+DP: 1D, 2D 
+
+public int[] findLongest(int[] arr){
+  // sanity check
+  if (arr == null || arr.length == 0) {
+    return null;
+  }
+  
+  int maxLen = 0; 
+  int preSum = 0; 
+  int[] result = new int[2]; 
+  Map<Integer, Integer> map = new HashMap<>(); 
+  map.put(0, -1); 
+  
+  for (int i = 0; i < arr.length; i++) {
+     preSum += arr[i] == 1 ? 1 : -1; 
+     if (map.containsKey(preSum)) {
+        // check if largest 
+        int index = map.get(preSum); 
+        if (i - index > maxLen) {
+          res[0] = index + 1; 
+          res[1] = i; 
+        }
+     } else {
+       // put in map
+       map.put(preSum, i)
+     }
+  }
+  return res; 
+}
