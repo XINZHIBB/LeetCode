@@ -1,0 +1,50 @@
+solve the issue that when we have lots of fields in the class which increase the complexity of the constructor. 
+
+public class FullName {
+    private final String firstName; 
+    private final String lastName; 
+    private final String middleName; 
+  
+    public FullName(String firstName, String lastName, String middleName){
+        this.firstName = firstName; 
+        this.lastName = lastName; 
+        this.middleName = middleName; 
+    } 
+    
+    ... 
+    
+    public static class FullNameBuilder() {
+        private String firstName; 
+        private String lastName; 
+        private String middleName; 
+        
+        public FullNameBuilder() {
+            this.firstName = null; 
+            this.lastName = null; 
+            this.middleName = null; 
+        }
+        
+        public FullNameBuilder setFirstName(String firstName) {
+           this.firstName = firstName; 
+           return this; 
+        }
+        
+        public FullNameBuilder setLastName(String lastName) {
+            this.lastName = lastName; 
+            return this; 
+        }
+        
+        public FullNameBuilder setMiddleName(String middleName) {
+            this.middleName = middleName; 
+            return this; 
+        }
+        
+        public FullName create() {
+          FullName name = new FullName(this.firstName, this.lastName, this.middleName);
+          return name; 
+        }
+    }
+}
+
+How to use ? 
+FullName name = new FullName.FullNameBuilder().setFirstName("Zheng").setLastName("Sun").create(); 
