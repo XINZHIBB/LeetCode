@@ -1,4 +1,6 @@
 
+For a certain class, we only want one instance of it
+
 public class singletonClass{
    private static singletonClass singletonInstance = null; 
    private void singletonClass() {
