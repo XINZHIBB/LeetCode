@@ -1,0 +1,16 @@
+
+public class singletonClass{
+   private static singletonClass singletonInstance = null; 
+   private void singletonClass() {
+   }
+    
+   public singletonClass getInstance(){
+      if (singletonInstance == null) {
+          singletonInstance = new singletonClass(); 
+      } 
+      return singletonInstance; 
+   }
+   
+   public method() {
+   }
+}
