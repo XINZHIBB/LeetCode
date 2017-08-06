@@ -1,0 +1,47 @@
+A horse starts from h, and can only jump with steps (2,1) or (1,2), dual-directional. 
+Please find out which location(s) can the horse be after s steps (the map will always be like this and the horse
+will always start from that point). 
+
+Horse Trapper
+Given a map:
+X X X
+X X X
+X X X
+X X X
+  H
+
+
+solution: 
+
+public static final int[][] dirs = {{1,2},{2,1},{-1,-2},{-2,-1},{-1,2},{1,-2},{-2,1},{2,-1}};
+public List<int[]> kStep(int[][] matrix, int[] start, int k) {
+  //sanity check 
+  List<int[]> result = new ArrayList<>(); 
+  if (matrix == null || matrix.length == 0 || matrix[0].length == 0 || start == null || start.length == 0) {
+      return result;
+  }
+  
+  Queue<int[]> que = new LinkedList<>(); 
+  que.offer(start); 
+  boolean[][] visited = new boolean[matrix.length][matrix[0].length]; 
+  
+  for (int i = 0; i < k; i++) {
+      int size = que.size();
+      for (int j = 0; j < size; j++) {
+          int[] cur = que.poll(); 
+          for (int[] dir : dirs) {
+              int nextX = cur[0] + dir[0];
+              int nextY = cur[1] + dir[1]; 
+              if (check boundary) {
+                  int[] nei = new int[]{nextX, nextY}; 
+                  que.offer(nei);
+              }
+          }
+      }  
+  }
+  result.addAll(que); 
+  return result;
+}
+
+Time: O(2^s)
+Space: O(2^s)
