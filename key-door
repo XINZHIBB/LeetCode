@@ -1,0 +1,151 @@
+Suppose you have a 2-D grid. Each point is either land or water. There is also a starting point and a goal. Implement a function that returns the shortest path from the start to the goal using land tiles. You can travel to up, down, left and right of the current location as long as it is within bound.
+
+0 = Water
+1 = Land
+2 = Start
+3 = Goal
+4 = door
+5 = key
+.....? 我掉线了?
+02111
+01004
+01001
+01113
+01151
+
+
+
+
+
+
+
+
+
+02111
+01001
+01001
+01113
+01111
+public List<int[]> findShortestPath(int[][] matrix, int[] start, int[] end) {
+// sanity check
+Queue<int[]> queue = new LinkedList<>();
+queue.add(start);
+Map<int[], List<int[]>> map = new HashMap<>(); // <cur, parent>
+while (!queue.isEmpty()) {
+int size = queue.size();
+for (int i = 0; i < size; i++) {
+int[] cur = queue.poll();
+if (cur == end) {
+break;
+}
+for (int[] dir : dirs) {
+int nextX = cur[0] + dir[0];
+int nextY = cur[1] + dir[1];
+if (boundary check && board[nextX][nextY] != 0 
+&& !visited[nextX][nextY]) {
+int[] nei = new int[]{nextX, nextY}
+queue.add(nei); 
+if (!map.containsKey(nei)) {
+map.put(nei, new ArrayList<>());
+}
+map.get(nei).add(cur); 
+}
+}
+visited[cur[0]][cur[1]] = true;
+}
+}
+dfs(end, start);
+}
+
+
+
+
+class Node{
+	Point curPos;
+	HashSet<String> keys;
+
+}
+
+ public static class Node {
+                int ;
+                int cr;
+                Set<Character> keys = new HashSet<>();
+                Node parent = null;
+
+                Node(int r, int c) {
+                        this.r = r;
+                        this.c = c;
+                }
+
+                @Override
+                public boolean equals(Object object) {
+                        Node o = (Node)object;
+                        return r == o.r && c == o.c && keys.containsAll(o.keys)
+                                && o.keys.containsAll(keys);
+                }
+
+                @Override
+                public int hashCode() {
+                        return keys.hashCode() + r + c;
+                }
+
+                @Override
+                public String toString(){
+                        return String.format("[%d,%d], with keys:%s", 
+                                        r, c, keys);
+                }
+        }
+        public static Node shortestPath(String[] map, int sx, int sy) {   
+                Queue<Node> que = new LinkedList<>();
+                que.offer(new Node(sx, sy));
+                Set<Node> visited = new HashSet<>();
+
+                while (!que.isEmpty()) {
+                        Node node = que.poll();
+                        if (map[node.r].charAt(node.c) == '3') {
+                                return node;
+                        }
+
+                        int[] arr = {-1,0,1,0,-1};
+                        for (int i = 0; i < 4; i++) {
+                                int r = node.r + arr[i];
+                                int c = node.c + arr[i+1];
+                                if (r < 0 || r >= map.length || c < 0 || c >= map[0].length()) {
+                                        continue;
+                                }          
+                                char letter = map[r].charAt(c);
+                                if (letter == '0') {
+                                        continue;
+                                }
+
+                                if ('A' <= letter && letter <= 'Z') {
+                                        // System.out.printf("DOOR:%c\n", letter);
+                                        char key = (char)('a' + (letter - 'A'));
+                                        if (!node.keys.contains(key)) {
+                                                // System.out.printf("node:%s does NOT contains key\n", node);
+                                                continue;
+                                        } else {
+                                                // System.out.printf("node:%s contains key\n", node);
+                                        }
+                                }
+
+                                Node neighbor = new Nod(r, c);
+                                neighbor.parent = node;
+                                neighbor.keys.addAll(node.keys);                                
+                                if ('a' <= letter && letter <= 'z') {
+                                        neighbor.keys.add(letter);
+                                }
+
+                                if (visited.contains(neighbor)) {
+                                        continue;
+                                }
+
+                                que.offer(neighbor);
+                                visited.add(neighbor);
+
+                        }
+
+                }
+                return null;
+
+        }
