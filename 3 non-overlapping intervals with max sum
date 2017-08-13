@@ -1,0 +1,45 @@
+public class HelloWorld{
+    
+    public int findLargestSum(int[] array, int k) {
+        // sanity check 
+        
+        // create prefixSum 
+        int[] preSum = new int[array.length]; 
+        for (int i = 0; i < array.length; i++) {
+            preSum[i] = i == 0 ? array[i] : preSum[i - 1] + array[i];
+        }
+        
+        // fill dp[][]
+        int[][] dp = new int[array.length][3];
+        int max = Integer.MIN_VALUE; 
+        
+        for (int curStart = 0; curStart + k - 1 < array.length; curStart++) {
+            // base case
+            int curEnd = curStart + k - 1; 
+            dp[curStart][0] = preSum[curEnd] - preSum[curStart] + array[curStart]; 
+            
+            for (int i = 1; i < 3; i++) {
+                for (int preStart = 0; preStart + k - 1 < curStart; preStart++) {
+                    int preEnd = preStart + k - 1; 
+                    if (dp[preStart][i - 1] + dp[curStart][0] > dp[curStart][i]) {
+                        dp[curStart][i] = dp[preStart][i - 1] + dp[curStart][0]; 
+                        if (i == 2) {
+                            max = Math.max(dp[curStart][2],   max); 
+                        }
+                    }
+                }
+            }
+        }
+        return max; 
+    }
+    
+    
+     public static void main(String []args){
+        System.out.println("Hello World");
+        
+        HelloWorld solution = new HelloWorld(); 
+        int[] arr1 = new int[]{1,6,6,1,2,4,7};
+        int k1 = 2; 
+        System.out.println(solution.findLargestSum(arr1, k1)); 
+     }
+}
