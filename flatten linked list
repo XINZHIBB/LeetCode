@@ -1,0 +1,76 @@
+Flatten a linked list where the elements can be either atomic or other linked lists.
+
+multi-level flatten linked list
+ListNode : next, down
+1 -> 2 -> 3 -> 4 -> 5
+       |              |       |
+       6            7       8
+       |
+       9
+
+result is 1 -> 2 -> 6 -> 9 -> 3
+
+step1: if child exits, dfs(child, last), return head,
+step2. maintain last node so that lastNode.next = head
+step2: if next exits, dfs(next), return head 
+
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode child; 
+}
+
+public ListNode flatList(ListNode head) {
+    // sanity check
+    ListNode[] last = new ListNode[1];  
+    return helper(head, last); 
+}
+
+private ListNode helper(ListNode head, ListNode[] last) {
+    // base case 
+    if (head == null) {
+        return null; 
+    }
+    last[0] = head; // record the last node 
+    ListNode next = head.next; 
+    // child 
+    if (head.child != null) {
+        head.next = helper(head.child, last);
+    }
+    
+    // next 
+    if (head.next != null) {
+        last[0].next = helper(head.next, last); 
+    }
+    
+    return head; 
+}
+
+
+Iterative: 
+
+public ListNode flatList(ListNode head) {
+    //sanity check 
+    
+    Deque<ListNode> stack = new LinkedList<>(); 
+    ListNode cur = head;
+    while (cur != null) {
+        if (cur.next != null) {
+            stack.pushFirst(cur.next); 
+        }
+        if (cur.child != null) {
+            cur.next = cur.child; 
+        } else {
+            cur.next = stack.isEmpty() ? null : stack.pollFirst(); 
+        } 
+        cur = cur.next; 
+    }
+    return head; 
+}
+
+
+
+
+
+
+
