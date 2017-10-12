@@ -1,0 +1,58 @@
+Given an array of meeting time intervals consisting of start and end times [[s1,e1],[s2,e2],...] (si < ei), find the minimum number of conference rooms required.
+
+For example,
+Given [[0, 30],[5, 10],[15, 20]],
+return 2.
+
+
+Solution:
+-> max overlapped num 
+Method1: use a array to store the meeting room needed for each timestamp. 
+         space too large
+
+Method2: only store the start and end time. maintain a variable named num; 
+         when visiting start time, num++
+         when visiting end time, num-- 
+       
+/** 
+ * Definition for an interval. 
+ * struct Interval { 
+ *     int start; 
+ *     int end; 
+ *     Interval() : start(0), end(0) {} 
+ *     Interval(int s, int e) : start(s), end(e) {} 
+ * }; 
+ */  
+class Solution {  
+public:  
+    int minMeetingRooms(Interval[] intervals) {  
+        if (intervals == null || intervals.length == 0) {
+            return 0; 
+        }
+        int num = 0; 
+        int minRooms = 0;
+        int startIndex = 0; 
+        int endIndex = 0;
+        int len = intervals.length; 
+        int[] starts = new int[len];
+        int[] ends = new int[len]; 
+        for (int i = 0; i < len; i++) {
+          starts[i] = intervals[i].start;
+          ends[i] = intervals[i].end; 
+        }
+        Arrays.sort(starts);
+        Arrays.sort(ends);
+        
+        while (startIndex < len && endIndex < len) {
+            if (starts[startIndex] < ends[endIndex]) {
+                num++; 
+                minRooms = Math.max(num, minRooms); 
+                startIndex++; 
+            } else {
+                num--;
+                endIndex++; 
+            }
+        }
+        return minRooms; 
+    } 
+};  
