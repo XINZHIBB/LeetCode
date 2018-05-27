@@ -1,0 +1,90 @@
+**/
+*HashMap Implementation
+*
+* put()
+* get()
+*
+*
+*
+*
+*/ 
+
+
+public class HashMap<K, V> {
+    public class Entry<K, V> {
+        K key;
+        V val; 
+        Entry next; 
+        
+        public Entry<K, V>(K key, V val) {
+            this.key = key; 
+            this.val = val;
+        }
+    }
+    
+    Entry<K, V>[] bucket; 
+    int size; 
+    public static final int SIZE = 16; 
+    public HashMap<K, V> {
+        bucket = new Entry<K, V>[SIZE];
+    }
+  
+    public V get(K key) {
+        int idx = getIndex(key); 
+        Entry<K, V> cur = bucket[idx]; 
+        while (cur != null) {
+            if (equalsKey(cur.key, key)) {
+                return cur.val; 
+            }
+            cur = cur.next;
+        }
+        return null; 
+    }
+    
+    public void put(K key, V val) {
+        int idx = getIndex[key]; 
+        Entry<K, V> cur = bucket[idx]; 
+        
+        if (cur == null) {
+            bucket[idx] = new Entry<K,V>(key, val);
+        } else {
+            Entry<K, V> head = cur; 
+            while (cur != null) {
+                if (equalsKey(cur.key, key)) {
+                    cur.val = val; 
+                    return; 
+                }
+                cur = cur.next; 
+            }
+            Entry<K, V> newHead = new Entry<K, V>(key, val); 
+            newHead.next = head;
+            bucket[idx] = newHead; 
+        }
+    }
+    
+    
+    
+    private int getIndex (K key) {
+        return hash(key) % bucket.length;  // 有缺点，如果需要resize 怎么处理
+    }
+    
+    private int hash(K key) {
+        if (key == null) {
+            return 0; 
+        }    
+        return key.hashCode() & OX7FFFFFFF; // non-negative
+    }
+    
+    private boolean equalsKey(K k1, K, k2) {
+        if (k1 == null && k2 == null) {
+            return false; 
+        } else if (k1 == null) {
+            reutrn false; 
+        } else if (k2 == null) {
+            return false; 
+        } 
+        
+        return k1.equals(k2); 
+    }
+
+}
