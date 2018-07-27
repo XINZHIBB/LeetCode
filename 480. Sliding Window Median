@@ -49,6 +49,9 @@ lazy deletion:
     extra variable: minHeapCount, maxHeapCount, HashMap<deleted num, #>
 Time: O(nlogn) Space:O(n)
 
+sol3: 
+TreeMap
+
 Q4: 
 in sorted view, every time when new num comes in, median position moves at most 1 position
 TODO: CODE 
