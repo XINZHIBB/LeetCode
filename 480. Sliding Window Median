@@ -1,0 +1,56 @@
+Median is the middle value in an ordered integer list. If the size of the list is even, there is no middle value. So the median is the mean of the two middle value.
+
+Examples: 
+[2,3,4] , the median is 3
+
+[2,3], the median is (2 + 3) / 2 = 2.5
+
+Given an array nums, there is a sliding window of size k which is moving from the very left of the array to the very right. You can only see the k numbers in the window. Each time the sliding window moves right by one position. Your job is to output the median array for each window in the original array.
+
+For example,
+Given nums = [1,3,-1,-3,5,3,6,7], and k = 3.
+
+
+Solution: 
+usually this problem starting with basic problem:
+1. find median for given array 
+2. find median for all subarrays in given array
+3. find median for k size subarrays in given array
+4. find median for streaming'
+
+Q1: 
+median -> 最大或者最小的n/2th element
+quick selection -> Time:O(n)
+
+Q2: 
+sol1: 
+for each subarray, 
+  sort it O(nlogn) and find the median in O(1)
+Time:O(n^2 logn) Space:O(n)
+
+sol2: 
+optimze the time to sort. 
+maxHeap + minHeap. 
+size of maxHeap == size of minHeap or size of maxHeap = size of minHeap + 1. 
+To keep sorted:
+  minHeap.offer(newNum) 
+  maxHeap.offer(minHeap.poll());
+  if size == 2, minHeap.offer(maxHeap.poll())
+
+Time:O(nlogn) Space:O(n)
+
+Q3: 
+sol1:
+every time, when we have a new num, we need drop an old num -> delete from the minHeap,maxHeap O(n).
+Time: O(n * k * logk) Space:O(k)
+
+sol2: 
+lazy deletion: 
+    extra variable: minHeapCount, maxHeapCount, HashMap<deleted num, #>
+Time: O(nlogn) Space:O(n)
+
+Q4: 
+in sorted view, every time when new num comes in, median position moves at most 1 position
+TODO: CODE 
+
+
