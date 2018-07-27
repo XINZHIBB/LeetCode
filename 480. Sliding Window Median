@@ -47,6 +47,9 @@ Time: O(n * k * logk) Space:O(k)
 sol2: 
 lazy deletion: 
     extra variable: minHeapCount, maxHeapCount, HashMap<deleted num, #>
+NOTE: 
+    if maxHeap size > minHeap size, 
+    when dealing with reomve, we need do maxHeap first since the duplicate should be in maxHEAP
 Time: O(nlogn) Space:O(n)
 
 sol3: 
