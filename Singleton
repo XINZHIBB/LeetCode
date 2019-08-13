@@ -1,18 +1,94 @@
 
 For a certain class, we only want one instance of it
 
-public class singletonClass{
-   private static singletonClass singletonInstance = null; 
-   private void singletonClass() {
+
+Basic Solution: 
+   public class SingletonClass{
+      // private and static reference 
+      private static singletonClass singletonInstance = new SingletonClass(); 
+
+      // constructor method should be private
+      private void SingletonClass() {  
+      }
+
+      public singletonInstance getInstance(){
+         return singletonInstance; 
+      }
    }
-    
-   public singletonClass getInstance(){
-      if (singletonInstance == null) {
-          singletonInstance = new singletonClass(); 
-      } 
-      return singletonInstance; 
+
+Pros of basic solution: 
+Can be efficient when there are multi threads since there are only reading operations when calling getInstance().
+
+Cons of basic solution: 
+The instance is constructed which means the memory is allocated for it before it is really used. 
+If the instance is nevered used, we will waste lots of memory which can be used by others.
+
+Solution2: construct the instance only when we need it 
+
+   public class SingletonClass{
+      // private and static reference 
+      private static singletonClass singletonInstance = null;  
+
+      // constructor method should be private
+      private void SingletonClass() {  
+      }
+
+      public singletonInstance getInstance(){
+         if (singletonInstance == null) {
+               singletonInstance = new SingletonClass();
+         }
+         return singletonInstance; 
+      }
    }
-   
-   public method() {
+
+Pros of solution2: 
+Fix the cons of basic solution. 
+Cons of solutino2: 
+May create multi instances when there are multi threads since getInstance() includes read and write operations. 
+
+Solution3: support multi threads  
+
+   public class SingletonClass{
+      // private and static reference 
+      private static singletonClass singletonInstance = null;  
+
+      // constructor method should be private
+      private void SingletonClass() {  
+      }
+
+      public singletonInstance synchronized getInstance(){
+         if (singletonInstance == null) {
+               singletonInstance = new SingletonClass();
+         }
+         return singletonInstance; 
+      }
    }
-}
+
+Pros: support multi thread 
+Cons: not efficient. The instance is only created once and after that, calling getInstance() is read operations. 
+Only the first write should be synchronized and the rest read should be ok. 
+
+Solution4: improve efficiency
+
+   public class SingletonClass{
+      // private and static reference 
+      private static singletonClass singletonInstance = null;  
+
+      // constructor method should be private
+      private void SingletonClass() {  
+      }
+
+      public singletonInstance getInstance(){
+         if (singletonInstance == null) { // multi threads will enter this loop 
+               synchronized (this) { // only one thread can access this statement at one time
+                  // when the instance is created and other threads get the lock and would like create a instance
+                  // They have to check first to avoid duplicatedly creation 
+                  if (singletonInstace == null) { 
+                        singletonInstance = new SingletonClass();
+                  }
+               }
+         }
+         return singletonInstance; 
+      }
+   }
+
