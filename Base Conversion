@@ -1,0 +1,33 @@
+Question: 
+Remove all numbers containing digit 4 from positive number sequence: 
+0,1,2,3,5,6,7,8,9,10,11,12,13,15, .... 
+Find the kth number. For example, 4th number is 5
+
+Example:
+0 1 2 3 5 6 7 8 9 
+0 1 2 3 4 5 6 7 8 
+
+10 11 12 13 15 16 17 18 19 
+9  10 11 12 13 14 15 16 17
+
+Thoughts:
+1. there is one to one mapping relation between sequence after removing and original sequence
+2. original sequence - base10, sequence after removing - base9
+3. Convert base10 number to base9 number and deal with the situation >4 and <4 
+
+Solution:
+public int getKth(int k) {
+    // sanity check skipped
+    
+    // fill the res from the LSB to MSB
+    int res = 0; 
+    int pos = 1; 
+    while (k > 0) {
+        int rem = k % 9;
+        k = k / 9; 
+        res = res + rem * pos; 
+        pos = pos * 10; 
+    }
+    
+    return res;
+}
