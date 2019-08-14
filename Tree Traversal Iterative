@@ -1,0 +1,79 @@
+To mimic the process of tree traversal with depth first search 
+
+Initial idea: 
+  cur pointer: visiting TreeNode
+  Stack: store TreeNodes need look back 
+  
+  Go to left/right node if exisiting: push current TreeNode to stack and cur is pointed to left/right child 
+  Return to previous level: cur is pointed to TreeNode poped from stack 
+  How to decide if go to left or right child? 
+  Ans: need know which is the previous node. 
+       case1: the previous node is parent -> go left
+       case2: the previous node is left child -> go right
+ 
+Improved idea: 
+  cur pointer: visiting TreeNode
+  prev pointer: previous visiting TreeNode 
+  Stack: store TreeNodes need look back 
+
+Algorithm: 
+       1                
+     /   \         
+    2     3      
+
+  When prev is cur's parent or null  
+    // print - preorder 
+    if left child exists, go left 
+    else if right child exists, go right
+    else return to previous node
+     
+  When prev is cur's left child, 
+    // print - inorder
+    if right child exists, go right
+    else return to previous node
+  
+  When prev is cur's right child, 
+    // print - postorder
+    return to previous node 
+
+Code:
+
+public void iterativeTreeTraversal(TreeNode root) {
+    TreeNode prev = null;
+    TreeNode cur = root; 
+    Deque<TreeNode> stack = new ArrayDeque(); 
+    
+    while(!stack.isEmpty() || cur != null) {
+        if (prev == null || prev.left == cur || prev.right == cur) {
+            System.out.println(cur.val); // preorder traverse 
+            if (cur.left != null) {
+                stack.offerFirst(cur);
+                prev = cur; 
+                cur = cur.left;
+            } else if (cur.right != null) {
+                stack.offerFirst(cur);
+                prev = cur; 
+                cur = cur.right; 
+            } else {
+                prev = cur;
+                cur = stack.pollFirst(); 
+            }
+        } else if (prev == cur.left) {
+            System.out.println(cur.val); // inorder traverse
+            if (cur.right != null) {
+                stack.offerFirst(cur);
+                prev = cur;
+                cur = cur.right; 
+            } else {
+                prev = cur;
+                cur = stack.pollFirst(); 
+            }
+        } else {
+            System.out.println(cur.val); // postorder traverse
+            prev = cur; 
+            cur = stack.pollFirst(); 
+        }
+    }
+}
+
+  
