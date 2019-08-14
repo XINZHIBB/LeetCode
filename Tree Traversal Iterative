@@ -51,10 +51,12 @@ public void iterativeTreeTraversal(TreeNode root) {
                 prev = cur; 
                 cur = cur.left;
             } else if (cur.right != null) {
+                System.out.println(cur.val); // inorder traverse 
                 stack.offerFirst(cur);
                 prev = cur; 
                 cur = cur.right; 
             } else {
+                System.out.println(cur.val); // post/inorder traverse
                 prev = cur;
                 cur = stack.pollFirst(); 
             }
