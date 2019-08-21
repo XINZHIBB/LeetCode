@@ -1,0 +1,103 @@
+Sol1:
+Try all possible coloring ways by following the coloring rule 
+Time: O(exponential) 
+
+Observation: 
+1. According to the coloring rule, once the first node is placed, the player can only spread from the first node. 
+2. Acoording to the tree structure, once the node is place a color, the other color can only occupy its left / right / parent subtree
+
+-> No need to try all the possible ways to color nodes since we only care about the sum of nodes 
+
+Sol2: 
+  get the num of nodes of left,right,parent subtree and if any of them > n / 2, the second player can win 
+  step1: get parent list of player1's node 
+  step2: get the left/right/parents numbers 
+  step3: check if any of them > n/2
+  Time: O(n)
+  Space: O(height) 
+  
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean btreeGameWinningMove(TreeNode root, int n, int x) {
+        if (root == null || n <= 0) {
+            return false; 
+        }
+        
+        List<TreeNode> list = new ArrayList<>();
+        List<TreeNode> parents = new ArrayList<>();
+        // step1: get the parent lists    
+        findX(root, x, list, parents);
+    
+        // collect 1st players left subtree and right subtree
+        int leftNum = getNodes(parents.get(parents.size() - 1).left);
+        int rightNum = getNodes(parents.get(parents.size() - 1).right);
+        
+        int parentNum = 0; 
+        for (int i = parents.size() - 1; i > 0; i--) {
+            if (parents.get(i - 1).left == parents.get(i)) {
+                parentNum += getNodes(parents.get(i - 1).right) + 1;
+            } else {
+                parentNum += getNodes(parents.get(i - 1).left) + 1; 
+            }
+        }
+        
+        int max = Math.max(parentNum, Math.max(leftNum, rightNum));
+        return max > n - max; 
+    }
+    
+    
+    private void findX(TreeNode root, int x, List<TreeNode> list, List<TreeNode> parents) {
+        // base case 
+        if (root == null) {
+            return; 
+        }
+        
+        if (root.val == x) {
+            list.add(root);
+            parents.addAll(list); 
+            return; 
+        }
+        
+        list.add(root);
+        findX(root.left, x, list, parents);
+        findX(root.right, x, list, parents);
+        list.remove(list.size() - 1);
+    }
+    
+    
+    private int getNodes(TreeNode root) {
+        if (root == null) {
+            return 0; 
+        }
+        
+        return 1 + getNodes(root.left) + getNodes(root.right); 
+    }
+    
+}
+
+Sol3: 
+  # of nodes of parent subtree = n - leftSubtreeNum - rightSubtreeNum - 1 
+
+Follow up: 
+what if you are the first player? 
+Thoughts: 
+  From the previous analysis, the 1st node of 1st player will split the tree to three parts, left/right/parent subtree. 
+  And the second player can only occupy one of them while the first player occupies the rest. 
+  So when the number of nodes of any of those subtrees < n/2, the first player can win since the rest > n/2.
+
+Sol: 
+  step1: for each node, get the left/right/parent numbers by recursion
+  step2: check if any node satisfies that any of left/right/parent numbers < (n+1) /2.
+  Time: O(n)
+ 
+
+
+
